@@ -1,0 +1,60 @@
+name: sigrok.org Synchronization workflow
+
+on:
+  schedule:
+    - cron: "0 0,12 * * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  # Git base URL for the sigrok.org upstream repositories
+  SIGROK_UPSTREAM_REPO_BASE: "git://sigrok.org"
+  # Github user/organisation for the mirrors
+  SIGROK_GITHUB_MIRROR_BASE: "knarfS"
+
+jobs:
+
+  sync_repos:
+    name: Synchronization
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        repo: ["libsigrokflow"]
+
+    steps:
+      - name: Checkout ${{ matrix.repo }}
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ env.SIGROK_GITHUB_MIRROR_BASE }}/${{ matrix.repo }}
+          ssh-key: ${{ secrets.SSH_SYNC_KEY }}
+          fetch-depth: 0
+          ref: master
+          path: ${{ matrix.repo }}
+
+      - name: Sync ${{ matrix.repo }} from upstream
+        run: |
+          export UPSTREAM_REPO="$SIGROK_UPSTREAM_REPO_BASE"/${{ matrix.repo }}
+          cd ${{ matrix.repo }}
+
+          echo "Adding tmp_upstream $UPSTREAM_REPO"
+          git remote add tmp_upstream "$UPSTREAM_REPO"
+          git remote --verbose
+          git fetch --verbose tmp_upstream master
+
+          echo "Syncing with upstream"
+          git pull tmp_upstream master
+          git push origin
+
+          echo "Syncing tags"
+          git fetch --tags --verbose tmp_upstream
+          git push --tags origin
+
+          echo "Removing tmp_upstream"
+          git remote rm tmp_upstream
+          git remote --verbose
+
