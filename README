@@ -1,0 +1,49 @@
+-------------------------------------------------------------------------------
+README
+-------------------------------------------------------------------------------
+
+The sigrok project aims at creating a portable, cross-platform,
+Free/Libre/Open-Source signal analysis software suite that supports various
+device types (such as logic analyzers, oscilloscopes, multimeters, and more).
+
+The sole purpose of sigrok-sync is to synchronize the Github mirrors of the
+sigrok.org project with the upstream repositories. This is done with a Github
+workflow.
+
+
+Status
+------
+
+sigrok-sync is in a usable state.
+
+
+Copyright and license
+---------------------
+
+sigrok-sync is licensed under the terms of the GNU General Public License
+(GPL), version 3 or later.
+
+While some individual source code files are licensed under the GPLv2+, and
+some files are licensed under the GPLv3+, this doesn't change the fact that
+the library as a whole is licensed under the terms of the GPLv3+.
+
+Please see the individual source files for the full list of copyright holders.
+
+
+Mailing list
+------------
+
+ https://lists.sourceforge.net/lists/listinfo/sigrok-devel
+
+
+IRC
+---
+
+You can find the sigrok developers in the #sigrok IRC channel on Libera.Chat.
+
+
+Website
+-------
+
+ http://sigrok.org
+
